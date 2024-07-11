@@ -1,8 +1,8 @@
-# {{workflow-name}}
-![Download count](https://img.shields.io/github/downloads/chrisgrieser/{{workflow-id}}/total?label=Total%20Downloads&style=plastic)
-![version number](https://img.shields.io/github/v/release/chrisgrieser/{{workflow-id}}?label=Latest%20Release&style=plastic)
+# alfred anime search
+![Download count](https://img.shields.io/github/downloads/chrisgrieser/alfred-anime-search/total?label=Total%20Downloads&style=plastic)
+![version number](https://img.shields.io/github/v/release/chrisgrieser/alfred-anime-search?label=Latest%20Release&style=plastic)
 
-{{workflow-description}}
+Search animes listed in the myanimelist database.
 
 - [ ] Showcase image to be inserted here.
 
@@ -12,7 +12,7 @@
   to ((do this))
 
 ## Installation
-[➡️ Download the latest release.](https://github.com/{{repo}}/releases/latest)
+[➡️ Download the latest release.](https://github.com/chrisgrieser/alfred-anime-search/releases/latest)
 
 When admitted to the Alfred Gallery, the workflow auto-updates via Alfred's
 workflow-update mechanism.
