@@ -1,15 +1,16 @@
-# alfred anime search
+# Alfred Anime Search
 ![Download count](https://img.shields.io/github/downloads/chrisgrieser/alfred-anime-search/total?label=Total%20Downloads&style=plastic)
-![version number](https://img.shields.io/github/v/release/chrisgrieser/alfred-anime-search?label=Latest%20Release&style=plastic)
+![Version number](https://img.shields.io/github/v/release/chrisgrieser/alfred-anime-search?label=Latest%20Release&style=plastic)
 
-Search animes listed in the myanimelist database.
+Search animes listed in the [myanimelist](http://myanimelist.net) database.
 
-- [ ] Showcase image to be inserted here.
+<img alt="Showcase" width=70% src="https://github.com/chrisgrieser/alfred-anime-search/assets/73286100/12933d0a-7d3f-4e6f-83eb-03fb55815079">
 
 ## Usage
-- ((Do this)) via the keyword `xxx`.
-- Press the [hotkey](https://www.alfredapp.com/help/workflows/triggers/hotkey/)
-  to ((do this))
+- Search all anime listed in the `myanimelist` database via the keyword `an`.
+	+ <kbd>⏎</kbd>: Open at myanimelist.net.
+	+ <kbd>⌘⏎</kbd>: Copy the Japanese (romaji) title.
+	+ <kbd>⌥⏎</kbd>: Copy the `myanimelist` URL.
 
 ## Installation
 [➡️ Download the latest release.](https://github.com/chrisgrieser/alfred-anime-search/releases/latest)
@@ -18,7 +19,7 @@ When admitted to the Alfred Gallery, the workflow auto-updates via Alfred's
 workflow-update mechanism.
 
 <!-- vale Google.FirstPerson = NO -->
-## Aboit the developer
+## About the developer
 In my day job, I am a sociologist studying the social mechanisms underlying the
 digital economy. For my PhD project, I investigate the governance of the app
 economy and how software ecosystems manage the tension between innovation and
