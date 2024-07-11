@@ -7,10 +7,10 @@ Search animes listed in the [myanimelist](http://myanimelist.net) database.
 <img alt="Showcase" width=70% src="https://github.com/chrisgrieser/alfred-anime-search/assets/73286100/a84fc03b-e7f0-4926-8c04-df73cd53c813">
 
 ## Usage
-- Search all anime listed in the `myanimelist` database via the keyword `an`.
-	+ <kbd>⏎</kbd>: Open at myanimelist.net.
-	+ <kbd>⌘⏎</kbd>: Copy the Japanese (romaji) title.
-	+ <kbd>⌥⏎</kbd>: Copy the `myanimelist` URL.
+Search all anime listed in the `myanimelist` database via the keyword `an`.
+- <kbd>⏎</kbd>: Open at myanimelist.net.
+- <kbd>⌘⏎</kbd>: Copy the Japanese (romaji) title.
+- <kbd>⌥⏎</kbd>: Copy the `myanimelist` URL.
 
 ## Installation
 [➡️ Download the latest release.](https://github.com/chrisgrieser/alfred-anime-search/releases/latest)
