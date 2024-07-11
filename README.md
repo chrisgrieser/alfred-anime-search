@@ -4,7 +4,7 @@
 
 Search animes listed in the [myanimelist](http://myanimelist.net) database.
 
-<img alt="Showcase" width=70% src="https://github.com/chrisgrieser/alfred-anime-search/assets/73286100/12933d0a-7d3f-4e6f-83eb-03fb55815079">
+<img alt="Showcase" width=70% src="https://github.com/chrisgrieser/alfred-anime-search/assets/73286100/a84fc03b-e7f0-4926-8c04-df73cd53c813">
 
 ## Usage
 - Search all anime listed in the `myanimelist` database via the keyword `an`.
