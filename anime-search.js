@@ -53,6 +53,9 @@ function getStreamInfo(malId) {
 /** @type {AlfredRun} */
 // biome-ignore lint/correctness/noUnusedVariables: Alfred run
 function run(argv) {
+	const altSearchJap = $.getenv("alt_search_jap") === "1";
+	const resultsNumber = 9; // alfred display maximum
+
 	const query = argv[0];
 	// GUARD
 	if (!query) {
@@ -63,7 +66,6 @@ function run(argv) {
 
 	// INFO rate limit: 60 requests/minute https://docs.api.jikan.moe/#section/Information/Rate-Limiting
 	// DOCS https://docs.api.jikan.moe/#tag/anime/operation/getAnimeSearch
-	const resultsNumber = 9; // Alfred display maximum
 	const apiURL = `https://api.jikan.moe/v4/anime?limit=${resultsNumber}&q=`;
 	const response = JSON.parse(httpRequest(apiURL + encodeURIComponent(query)));
 	if (!response.data) {
@@ -115,6 +117,8 @@ function run(argv) {
 			.filter((component) => (component || "").match(/\w/)) // not emojiy only
 			.join("  ");
 
+		const altSearchTitle = altSearchJap ? titleJap : titleEng;
+
 		return {
 			title: displayText,
 			subtitle: subtitle,
@@ -122,6 +126,7 @@ function run(argv) {
 			quicklookurl: url,
 			mods: {
 				cmd: { arg: titleJap, valid: Boolean(titleJap) },
+				shift: { arg: altSearchTitle },
 			},
 		};
 	});

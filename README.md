@@ -11,6 +11,8 @@ Search all anime listed in the `myanimelist` database via the keyword `an`.
 - <kbd>⏎</kbd>: Open at myanimelist.net.
 - <kbd>⌘⏎</kbd>: Copy the Japanese (romaji) title.
 - <kbd>⌥⏎</kbd>: Copy the `myanimelist` URL.
+- <kbd>⇧⏎</kbd>: Search for the title on an alternative site, such as a
+  streaming website.
 
 [Due to an API limitation](https://github.com/jikan-me/jikan-rest/issues/529),
 indicators of streaming services can only be shown for the first search result.
