@@ -100,7 +100,7 @@ function run(argv) {
 		const titleJapMax = 40; // CONFIG
 		let titleJap = shortenSeason(title_english ? title : title_synonyms[0]);
 		if (titleJap === titleEng) titleJap = ""; // skip identical titles
-		titleJap =
+		const titleJapDisplay =
 			"🇯🇵 " + (titleJap.length > titleJapMax ? titleJap.slice(0, titleJapMax) + "…" : titleJap);
 
 		const episodesStr = episodes && "📺 " + episodes.toString();
@@ -111,7 +111,7 @@ function run(argv) {
 
 		const stream = first ? streamInfo : "";
 		if (first) first = false;
-		const subtitle = [stream, episodesStr, scoreStr, titleJap, genreInfo]
+		const subtitle = [stream, episodesStr, scoreStr, titleJapDisplay, genreInfo]
 			.filter((component) => (component || "").match(/\w/)) // not emojiy only
 			.join("  ");
 

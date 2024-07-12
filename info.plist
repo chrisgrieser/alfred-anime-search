@@ -204,7 +204,8 @@ Search all anime listed in the `myanimelist` database via the keyword `an`.
 - &lt;kbd&gt;⌘⏎&lt;/kbd&gt;: Copy the Japanese (romaji) title.
 - &lt;kbd&gt;⌥⏎&lt;/kbd&gt;: Copy the `myanimelist` URL.
 
-[Due to an API limitation](https://github.com/jikan-me/jikan-rest/issues/529), indicators of streaming services can only be shown for the first search result.
+[Due to an API limitation](https://github.com/jikan-me/jikan-rest/issues/529),
+indicators of streaming services can only be shown for the first search result.
 
 ---
 
