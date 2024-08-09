@@ -49,15 +49,17 @@ function errorItem(title, subtitle) {
 /** @type {AlfredRun} */
 // biome-ignore lint/correctness/noUnusedVariables: Alfred run
 function run(argv) {
-	const altSearchJap = $.getenv("alt_search_jap") === "1";
-	const resultsNumber = 9; // alfred display maximum
-
-	const [_, altSearchHostname] =
-		$.getenv("alt_search_url").match(/https?:\/\/(?:www\.)?(\w+\.\w+)/) || [];
-
+	// GUARD
 	const query = argv[0];
 	if (!query) return errorItem("Search for anime", "Enter name of anime…");
 
+	// PARAMETERS
+	const altSearchJap = $.getenv("alt_search_jap") === "1";
+	const resultsNumber = 9; // alfred display maximum
+	const [_, altSearchHostname] =
+		$.getenv("alt_search_url").match(/https?:\/\/(?:www\.)?(\w+\.\w+)/) || [];
+
+	// API REQUEST
 	// INFO rate limit: 60 requests/minute https://docs.api.jikan.moe/#section/Information/Rate-Limiting
 	// DOCS https://docs.api.jikan.moe/#tag/anime/operation/getAnimeSearch
 	const apiURL = `https://api.jikan.moe/v4/anime?limit=${resultsNumber}&q=`;
@@ -74,44 +76,41 @@ function run(argv) {
 	/** @type AlfredItem[] */
 	const animeTitles = response.data.map((/** @type {MalEntry} */ anime) => {
 		// biome-ignore format: annoyingly long list
-		const { titles, year, status, episodes, score, genres, themes, demographics, url, images } = anime;
+		const { titles, mal_id, year, status, episodes, score, genres, themes, demographics, images } = anime;
 
+		// TITLE
 		const titleEng = getTitle(titles, "English", "Default");
 		const yearInfo = year && !titleEng.match(/\d{4}/) ? `(${year})` : "";
-
 		let emoji = "";
 		if (status === "Currently Airing") emoji += "🎙️";
 		else if (status === "Not yet aired") emoji += "🗓️";
-
 		const displayText = [emoji, titleEng, yearInfo].filter(Boolean).join(" ");
 
+		// SUBTITLE
 		const titleJapMax = 40; // CONFIG
-		let titleJap = getTitle(titles, "Japanese", "Synonym");
+		let titleJap = getTitle(titles, "Default", "Synonym"); // default is romaji title
 		if (titleJap === titleEng) titleJap = ""; // skip identical titles
 		const titleJapDisplay =
 			"🇯🇵 " + (titleJap.length > titleJapMax ? titleJap.slice(0, titleJapMax) + "…" : titleJap);
-
 		const episodesStr = episodes && "📺 " + episodes.toString();
 		const scoreStr = score && "⭐ " + score.toFixed(1).toString();
-
 		const genreInfo =
 			"[" + [...demographics, ...genres, ...themes].map((genre) => genre.name).join(", ") + "]";
-
 		const subtitle = [episodesStr, scoreStr, titleJapDisplay, genreInfo]
 			.filter((component) => (component || "").match(/\w/)) // not emojiy only
 			.join("  ");
 
+		// ALT SEARCH & QUICKLOOK
 		const altSearchTitle = altSearchJap ? titleJap : titleEng;
 		const altSearchSubtitle = altSearchHostname
 			? `⇧: Search for "${altSearchTitle}" at ${altSearchHostname}`
 			: undefined;
-
 		const image = images.webp.large_image_url || images.jpg.large_image_url;
 
 		return {
 			title: displayText,
 			subtitle: subtitle,
-			arg: url,
+			arg: mal_id,
 			quicklookurl: image,
 			mods: {
 				cmd: {
