@@ -24,7 +24,6 @@ function errorItem(title, subtitle) {
 
 // INFO streaming info not available via search API https://github.com/jikan-me/jikan-rest/issues/529
 // PERF not doing a separate call for performance reasons
-
 /** @typedef {Object} MalEntry
  * @property {number} mal_id
  * @property {string} title
@@ -38,6 +37,7 @@ function errorItem(title, subtitle) {
  * @property {{name: string}[]} genres
  * @property {{name: string}[]} themes
  * @property {{name: string}[]} demographics
+ * @property {{jpg: {large_image_url: string}, webp: {large_image_url: string}}} images
  */
 
 //──────────────────────────────────────────────────────────────────────────────
@@ -70,7 +70,7 @@ function run(argv) {
 	/** @type AlfredItem[] */
 	const animeTitles = response.data.map((/** @type {MalEntry} */ anime) => {
 		// biome-ignore format: annoyingly long list
-		const { title, title_english, title_synonyms, year, status, episodes, score, genres, themes, demographics, url } = anime;
+		const { title, title_english, title_synonyms, year, status, episodes, score, genres, themes, demographics, url, images } = anime;
 
 		const titleEng = shortenSeason(title_english || title);
 		const yearInfo = year && !titleEng.match(/\d{4}/) ? `(${year})` : "";
@@ -102,11 +102,13 @@ function run(argv) {
 			? `⇧: Search for "${altSearchTitle}" at ${altSearchHostname}`
 			: undefined;
 
+		const image = images.webp.large_image_url || images.jpg.large_image_url;
+
 		return {
 			title: displayText,
 			subtitle: subtitle,
 			arg: url,
-			quicklookurl: url,
+			quicklookurl: image,
 			mods: {
 				cmd: {
 					arg: titleJap,
