@@ -3,25 +3,20 @@
 ![Version number](https://img.shields.io/github/v/release/chrisgrieser/alfred-anime-search?label=Latest%20Release&style=plastic)
 
 Search animes listed in the [myanimelist](http://myanimelist.net) database.
+Open at [myanimelist](http://myanimelist.net) or [AniList](https://anilist.co).
 
 <img alt="Showcase" width=70% src="https://github.com/chrisgrieser/alfred-anime-search/assets/73286100/a84fc03b-e7f0-4926-8c04-df73cd53c813">
 
 ## Usage
 Search all anime listed in the `myanimelist` database via the keyword `an`.
-- <kbd>⏎</kbd>: Open at myanimelist.net.
+- <kbd>⏎</kbd>: Open at `myanimelist` or `AniList`.
 - <kbd>⌘⏎</kbd>: Copy the Japanese (romaji) title.
-- <kbd>⌥⏎</kbd>: Copy the `myanimelist` URL.
+- <kbd>⌥⏎</kbd>: Copy the `myanimelist` or `AniList` URL.
 - <kbd>⇧⏎</kbd>: Search for the title on an alternative site, such as a
   streaming website.
 
-[Due to an API limitation](https://github.com/jikan-me/jikan-rest/issues/529),
-indicators of streaming services can only be shown for the first search result.
-
 ## Installation
 [➡️ Download the latest release.](https://github.com/chrisgrieser/alfred-anime-search/releases/latest)
-
-When admitted to the Alfred Gallery, the workflow auto-updates via Alfred's
-workflow-update mechanism.
 
 <!-- vale Google.FirstPerson = NO -->
 ## About the developer
