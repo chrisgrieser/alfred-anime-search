@@ -17,26 +17,13 @@ function shortenSeason(title) {
 	return title.replace(/ Season (\d+)$/, " S$1");
 }
 
-/** @param {string} malId @return {string} */
-function getStreamInfo(malId) {
-	const streamingResponse = httpRequest(`https://api.jikan.moe/v4/anime/${malId}/streaming`);
-	if (!streamingResponse) return "";
-
-	const streaming = JSON.parse(streamingResponse).data.map((/** @type {{ name: string; }} */ a) =>
-		a.name.toLowerCase(),
-	);
-	const streamInfo = [];
-	if (streaming.includes("crunchyroll")) streamInfo.push("C");
-	if (streaming.includes("netflix")) streamInfo.push("N");
-	if (streaming.includes("hidive")) streamInfo.push("H");
-	if (streamInfo.length > 0) streamInfo.unshift("🛜");
-	return streamInfo.join(" ");
-}
-
 /** @param {string} title @param {string} subtitle */
 function errorItem(title, subtitle) {
 	return JSON.stringify({ items: [{ title: title, subtitle: subtitle, valid: false }] });
 }
+
+// INFO streaming info not available via search API https://github.com/jikan-me/jikan-rest/issues/529
+// PERF not doing a separate call for performance reasons
 
 /** @typedef {Object} MalEntry
  * @property {number} mal_id
@@ -78,14 +65,6 @@ function run(argv) {
 	}
 	if (response.data.length === 0) return errorItem("No Results", "");
 
-	// streaming info not available via search API, so we need to fetch it
-	// separately. For performance reasons, (and due to the API limit of 3
-	// requests per second) we only fetch the first one
-	// PENDING https://github.com/jikan-me/jikan-rest/issues/529
-	const idOfFirstResult = response.data[0].mal_id;
-	const streamInfo = getStreamInfo(idOfFirstResult);
-	let first = true;
-
 	//───────────────────────────────────────────────────────────────────────────
 
 	/** @type AlfredItem[] */
@@ -114,9 +93,7 @@ function run(argv) {
 		const genreInfo =
 			"[" + [...demographics, ...genres, ...themes].map((genre) => genre.name).join(", ") + "]";
 
-		const stream = first ? streamInfo : "";
-		if (first) first = false;
-		const subtitle = [stream, episodesStr, scoreStr, titleJapDisplay, genreInfo]
+		const subtitle = [episodesStr, scoreStr, titleJapDisplay, genreInfo]
 			.filter((component) => (component || "").match(/\w/)) // not emojiy only
 			.join("  ");
 
