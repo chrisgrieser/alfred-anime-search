@@ -11,10 +11,16 @@ function httpRequest(url) {
 	return $.NSString.alloc.initWithDataEncoding(data, $.NSUTF8StringEncoding).js;
 }
 
-/** @param {string} title */
-function shortenSeason(title) {
-	if (!title) return "";
-	return title.replace(/ Season (\d+)$/, " S$1");
+/**
+ * @param {{title: string, type: string}[]} titles
+ * @param {string} type
+ * @param {string} fallbackType
+ * @return {string}
+ */
+function getTitle(titles, type, fallbackType) {
+	const foundTitle =
+		titles.find((t) => t.type === type) || titles.find((t) => t.type === fallbackType);
+	return foundTitle?.title.replace(/ Season (\d+)$/, " S$1") || "";
 }
 
 /** @param {string} title @param {string} subtitle */
@@ -26,11 +32,9 @@ function errorItem(title, subtitle) {
 // PERF not doing a separate call for performance reasons
 /** @typedef {Object} MalEntry
  * @property {number} mal_id
- * @property {string} title
- * @property {string} title_english
+ * @property {{title: string, type: string}[]} titles
  * @property {string} url
  * @property {string} status
- * @property {string[]} title_synonyms
  * @property {number} year
  * @property {number} score
  * @property {number} episodes
@@ -70,9 +74,9 @@ function run(argv) {
 	/** @type AlfredItem[] */
 	const animeTitles = response.data.map((/** @type {MalEntry} */ anime) => {
 		// biome-ignore format: annoyingly long list
-		const { title, title_english, title_synonyms, year, status, episodes, score, genres, themes, demographics, url, images } = anime;
+		const { titles, year, status, episodes, score, genres, themes, demographics, url, images } = anime;
 
-		const titleEng = shortenSeason(title_english || title);
+		const titleEng = getTitle(titles, "English", "Default");
 		const yearInfo = year && !titleEng.match(/\d{4}/) ? `(${year})` : "";
 
 		let emoji = "";
@@ -82,7 +86,7 @@ function run(argv) {
 		const displayText = [emoji, titleEng, yearInfo].filter(Boolean).join(" ");
 
 		const titleJapMax = 40; // CONFIG
-		let titleJap = shortenSeason(title_english ? title : title_synonyms[0]);
+		let titleJap = getTitle(titles, "Japanese", "Synonym");
 		if (titleJap === titleEng) titleJap = ""; // skip identical titles
 		const titleJapDisplay =
 			"🇯🇵 " + (titleJap.length > titleJapMax ? titleJap.slice(0, titleJapMax) + "…" : titleJap);
