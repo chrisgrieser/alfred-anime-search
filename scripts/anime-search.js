@@ -102,9 +102,7 @@ function run(argv) {
 
 		// ALT SEARCH & QUICKLOOK
 		const altSearchTitle = altSearchJap ? titleJap : titleEng;
-		const altSearchSubtitle = altSearchHostname
-			? `⇧: Search for "${altSearchTitle}" at ${altSearchHostname}`
-			: undefined;
+		const altSearchSubtitle = `⇧: Search for "${altSearchTitle}" at ${altSearchHostname}`;
 		const altSearchURL = $.getenv("alt_search_url") + encodeURIComponent(altSearchTitle);
 		const image = images.webp.large_image_url || images.jpg.large_image_url;
 
