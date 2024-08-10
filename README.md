@@ -14,6 +14,7 @@ Search all anime listed in the `myanimelist` database via the keyword `an`.
 - <kbd>⌥⏎</kbd>: Copy the `myanimelist` or `AniList` URL.
 - <kbd>⇧⏎</kbd>: Search for the title on an alternative site, such as a
   streaming website.
+- <kbd>⌘Y</kbd>: Preview the hero image or `myanimelist` page of the entry.
 
 ## Installation
 [➡️ Download the latest release.](https://github.com/chrisgrieser/alfred-anime-search/releases/latest)

@@ -384,6 +384,7 @@ Search all anime listed in the `myanimelist` database via the keyword `an`.
 - &lt;kbd&gt;⌥⏎&lt;/kbd&gt;: Copy the myanimelist.net or AniList URL.
 - &lt;kbd&gt;⇧⏎&lt;/kbd&gt;: Search for the title on an alternative site, such as a
   streaming website.
+- &lt;kbd&gt;⌘Y&lt;/kbd&gt;: Quicklook the hero image or `myanimelist` page of the entry.
 
 ---
 
@@ -530,11 +531,37 @@ Created by [Chris Grieser](https://chris-grieser.de/).</string>
 			<key>description</key>
 			<string>This setting only determines where to open the result, the search uses the myanimelist database regardless.</string>
 			<key>label</key>
-			<string>⏎ opens at</string>
+			<string>⏎ opens</string>
 			<key>type</key>
 			<string>popupbutton</string>
 			<key>variable</key>
 			<string>open_at</string>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>default</key>
+				<string>image</string>
+				<key>pairs</key>
+				<array>
+					<array>
+						<string>image</string>
+						<string>image</string>
+					</array>
+					<array>
+						<string>myanimelist</string>
+						<string>mal</string>
+					</array>
+				</array>
+			</dict>
+			<key>description</key>
+			<string>If installed, this affects what is previed with AlfredExtraPane.</string>
+			<key>label</key>
+			<string>QuickLook</string>
+			<key>type</key>
+			<string>popupbutton</string>
+			<key>variable</key>
+			<string>quicklook_at</string>
 		</dict>
 		<dict>
 			<key>config</key>
