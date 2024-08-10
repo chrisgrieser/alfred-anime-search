@@ -55,16 +55,17 @@ function run(argv) {
 
 	// PARAMETERS
 	const altSearchJap = $.getenv("alt_search_jap") === "1";
-	const resultsNumber = 9; // alfred display maximum
 	const [_, altSearchHostname] =
 		$.getenv("alt_search_url").match(/https?:\/\/(?:www\.)?(\w+\.\w+)/) || [];
 	const quicklookMal = $.getenv("quicklook_at") === "mal";
+	const prioritizeAiring = $.getenv("sorting") === "prioritize airing";
 
 	// API REQUEST
 	// INFO rate limit: 60 requests/minute https://docs.api.jikan.moe/#section/Information/Rate-Limiting
 	// DOCS https://docs.api.jikan.moe/#tag/anime/operation/getAnimeSearch
-	const apiURL = `https://api.jikan.moe/v4/anime?limit=${resultsNumber}&q=`;
-	const response = JSON.parse(httpRequest(apiURL + encodeURIComponent(query)));
+	const apiURL = "https://api.jikan.moe/v4/anime?q=" + encodeURIComponent(query);
+	/** @type {{data: MalEntry[]}} */
+	const response = JSON.parse(httpRequest(apiURL));
 	if (!response.data) {
 		// biome-ignore lint/suspicious/noConsoleLog: intentional
 		console.log(JSON.stringify(response));
@@ -75,7 +76,11 @@ function run(argv) {
 	//───────────────────────────────────────────────────────────────────────────
 
 	/** @type AlfredItem[] */
-	const animeTitles = response.data.map((/** @type {MalEntry} */ anime) => {
+	const animes = [];
+	/** @type AlfredItem[] */
+	const airingAnimes = [];
+
+	for (const anime of response.data) {
 		// biome-ignore format: annoyingly long list
 		const { titles, mal_id, year, status, episodes, score, genres, themes, demographics, images, url } = anime;
 
@@ -110,7 +115,8 @@ function run(argv) {
 		const image = images.webp.large_image_url || images.jpg.large_image_url;
 		const quicklook = quicklookMal ? url : image;
 
-		return {
+		const group = prioritizeAiring && status === "Currently Airing" ? airingAnimes : animes;
+		group.push({
 			title: displayText,
 			subtitle: subtitle,
 			arg: mal_id, // will get URL from it
@@ -132,7 +138,8 @@ function run(argv) {
 					variables: { action: "open" },
 				},
 			},
-		};
-	});
-	return JSON.stringify({ items: animeTitles });
+		});
+	}
+
+	return JSON.stringify({ items: [...airingAnimes, ...animes] });
 }
