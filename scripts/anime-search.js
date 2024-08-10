@@ -69,9 +69,9 @@ function run(argv) {
 	if (!response.data) {
 		// biome-ignore lint/suspicious/noConsoleLog: intentional
 		console.log(JSON.stringify(response));
-		return errorItem("Unknown Error", "See debugging log.");
+		return errorItem("Unknown error.", "See debugging log.");
 	}
-	if (response.data.length === 0) return errorItem("No Results", "");
+	if (response.data.length === 0) return errorItem("No results.", "");
 
 	//───────────────────────────────────────────────────────────────────────────
 
