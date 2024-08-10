@@ -53,19 +53,25 @@ function run(argv) {
 	const query = argv[0];
 	if (!query) return errorItem("Search for anime", "Enter name of anime…");
 
-	// PARAMETERS
+	// ALFRED PARAMETERS
 	const altSearchJap = $.getenv("alt_search_jap") === "1";
 	const [_, altSearchHostname] =
 		$.getenv("alt_search_url").match(/https?:\/\/(?:www\.)?(\w+\.\w+)/) || [];
 	const quicklookMal = $.getenv("quicklook_at") === "mal";
 	const prioritizeAiring = $.getenv("sorting") === "prioritize airing";
 
+	// API CALL PARAMETERS
+	/** @type {string[]} */
+	const params = [];
+	if ($.getenv("exclude_nonshows") === "1") params.push("type=tv");
+	if ($.getenv("exclude_nsfw") === "1") params.push("sfw=true");
+
 	// API REQUEST
 	// INFO rate limit: 60 requests/minute https://docs.api.jikan.moe/#section/Information/Rate-Limiting
 	// DOCS https://docs.api.jikan.moe/#tag/anime/operation/getAnimeSearch
-	const apiURL = "https://api.jikan.moe/v4/anime?q=" + encodeURIComponent(query);
+	const apiURL = `https://api.jikan.moe/v4/anime?${params.join("&")}&q=`;
 	/** @type {{data: MalEntry[]}} */
-	const response = JSON.parse(httpRequest(apiURL));
+	const response = JSON.parse(httpRequest(apiURL + encodeURIComponent(query)));
 	if (!response.data) {
 		// biome-ignore lint/suspicious/noConsoleLog: intentional
 		console.log(JSON.stringify(response));
