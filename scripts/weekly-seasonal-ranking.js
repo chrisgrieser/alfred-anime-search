@@ -22,6 +22,7 @@ function httpRequest(url) {
  * @property {number} mal_id
  * @property {number} episode
  * @property {number} comments
+ * @property {number} score mal score
  * @property {{large: string, medium: string}?} images
  * @property {{name: string, url: string, logo: string}?} streams
  */
@@ -100,7 +101,8 @@ function run() {
 			"🔼 " + show.karma + karmaChange,
 			"💬 " + show.comments,
 			rankChange,
-		].join("    ");
+			show.score ? "MAL " + show.score : "",
+		].join("     ");
 
 		/** @type {AlfredItem} */
 		const alfredItem = {
