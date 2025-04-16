@@ -14,11 +14,11 @@ function httpRequest(url) {
 /** @typedef {Object} rAnimeRanking
  * @property {string} title
  * @property {string} title_english
- * @property {string} url // reddit url
+ * @property {string} url reddit url
  * @property {number} karma
  * @property {number} karma_change
  * @property {number} current_rank
- * @property {number|string} rank_change // string for "returning" and such
+ * @property {number|string} rank_change string for "returning" and such
  * @property {number} mal_id
  * @property {number} episode
  * @property {number} comments
@@ -32,7 +32,10 @@ function httpRequest(url) {
 // biome-ignore lint/correctness/noUnusedVariables: Alfred run
 function run() {
 	const useJapTitle = $.getenv("seasonal_jap_title") === "1";
-	const usePreviousWeek = $.getenv("seasonal_ongoing_week") === "0";
+	const usePreviousWeek =
+		$.NSProcessInfo.processInfo.environment.objectForKey("usePreviousWeek").js === undefined
+			? $.getenv("seasonal_start_with_ongoing") === "0"
+			: $.NSProcessInfo.processInfo.environment.objectForKey("usePreviousWeek").js === "true";
 
 	// get year/season/weekNum based on files available
 	const year = new Date().getFullYear();
@@ -117,6 +120,9 @@ function run() {
 						: "⇧: No stream available",
 					valid: Boolean(show.streams?.url),
 				},
+				ctrl: {
+					variables: { usePreviousWeek: (!usePreviousWeek).toString() },
+				},
 			},
 			quicklookurl: show.images?.large || show.images?.medium,
 		};
@@ -126,22 +132,24 @@ function run() {
 	// add info as first item
 	const seasonCapitalized = season.charAt(0).toUpperCase() + season.slice(1);
 	const totalKarmaInfo = "Total karma: " + totalKarma.toLocaleString();
+	const status = usePreviousWeek ? "previous" : "ongoing";
 	items.unshift({
-		title: `r/anime: ${seasonCapitalized} ${year}, week #${weekNum}`,
+		title: `r/anime: ${seasonCapitalized} ${year}, week ${weekNum} (${status})`,
 		subtitle: totalKarmaInfo,
 		valid: false,
 		mods: {
 			shift: { subtitle: totalKarmaInfo, valid: false },
 			cmd: { subtitle: totalKarmaInfo, valid: false },
+			ctrl: {
+				valid: true,
+				variables: { usePreviousWeek: (!usePreviousWeek).toString() },
+			},
 		},
 	});
 
 	return JSON.stringify({
 		items: items,
 		skipknowledge: true, // keep ranking order
-		cache: {
-			seconds: usePreviousWeek ? 3600 * 24 : 3600, // daily/hourly
-			loosereload: true,
-		},
+		// cannot use Alfred's caching mechanism due to the switching between weeks
 	});
 }

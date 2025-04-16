@@ -24,6 +24,8 @@ via `as`.
 - <kbd>⏎</kbd>: Open weekly episode discussion thread at reddit.
 - <kbd>⌘⏎</kbd>: Open the show at myanimelist.net or AniList.
 - <kbd>⇧⏎</kbd>: Open the episode at the streaming site, if available.
+- <kbd>⌃⏎</kbd>: Toggle between showing the previous and the ongoing week. Note
+  that the ranking of the ongoing week is "live" and thus still incomplete.
 - <kbd>⌘Y</kbd>: Quick Look the hero image of the show/episode.
 
 ## Installation
