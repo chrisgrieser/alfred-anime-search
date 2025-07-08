@@ -1,6 +1,6 @@
 # Alfred Anime Search
 ![GitHub downloads](https://img.shields.io/github/downloads/chrisgrieser/alfred-anime-search/total?label=GitHub%20Downloads&style=plastic&logo=github)
-![Alfred gallery downloads](https://img.shields.io/badge/dynamic/yaml?url=https%3A%2F%2Fraw.githubusercontent.com%2Fchrisgrieser%2F.config%2Frefs%2Fheads%2Fmain%2FAlfred.alfredpreferences%2Falfred-workflow-download-count.yaml&query=alfred-anime-search&style=plastic&logo=alfred&label=Gallery%20Downloads&color=%235C1F87)
+![Alfred gallery downloads](https://img.shields.io/badge/dynamic/yaml?url=https%3A%2F%2Fraw.githubusercontent.com%2Fchrisgrieser%2F.config%2Frefs%2Fheads%2Fmain%2FAlfred.alfredpreferences%2Falfred-gallery-downloads.yaml&query=anime-search&style=plastic&logo=alfred&label=Gallery%20Downloads&color=%235C1F87)
 ![Latest release](https://img.shields.io/github/v/release/chrisgrieser/alfred-anime-search?label=Latest%20Release&style=plastic)
 
 Search animes listed in the [myanimelist](http://myanimelist.net) database or
