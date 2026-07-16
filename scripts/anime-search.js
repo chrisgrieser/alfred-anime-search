@@ -6,8 +6,8 @@ app.includeStandardAdditions = true;
 
 /** @param {string} url @return {string} */
 function httpRequest(url) {
-	const queryURL = $.NSURL.URLWithString(url);
-	const data = $.NSData.dataWithContentsOfURL(queryURL);
+	const queryUrl = $.NSURL.URLWithString(url);
+	const data = $.NSData.dataWithContentsOfURL(queryUrl);
 	return $.NSString.alloc.initWithDataEncoding(data, $.NSUTF8StringEncoding).js;
 }
 
@@ -48,7 +48,6 @@ function errorItem(title, subtitle) {
 
 /** @type {AlfredRun} */
 // biome-ignore lint/correctness/noUnusedVariables: Alfred run
-// biome-ignore lint/complexity/noExcessiveCognitiveComplexity: okay here
 function run(argv) {
 	// GUARD
 	const query = argv[0];
@@ -71,7 +70,7 @@ function run(argv) {
 	// API REQUEST
 	// INFO rate limit: 60 requests/minute https://docs.api.jikan.moe/#section/Information/Rate-Limiting
 	// DOCS https://docs.api.jikan.moe/#tag/anime/operation/getAnimeSearch
-	const apiURL = "https://api.jikan.moe/v4/anime?" + params.join("&");
+	const apiUrl = "https://api.jikan.moe/v4/anime?" + params.join("&");
 	/** @type {{data: MalEntry[]}} */
 	const response = JSON.parse(httpRequest(apiURL));
 	if (!response.data) {
@@ -85,6 +84,8 @@ function run(argv) {
 	/** @type AlfredItem[] */
 	const animes = [];
 	/** @type AlfredItem[] */
+	/** @type AlfredItem[] */ const animes = [];
+	/** @type AlfredItem[] */ const airingAnimes = [];
 	const airingAnimes = [];
 
 	for (const anime of response.data) {
@@ -116,7 +117,7 @@ function run(argv) {
 		// ALT SEARCH
 		const altSearchTitle = altSearchJap ? titleJap : titleEng;
 		const altSearchSubtitle = `⇧: Search for "${altSearchTitle}" at ${altSearchHostname}`;
-		const altSearchURL = $.getenv("alt_search_url") + encodeURIComponent(altSearchTitle);
+		const altSearchUrl = $.getenv("alt_search_url") + encodeURIComponent(altSearchTitle);
 
 		// QUICKLOOK
 		const image = images.webp.large_image_url || images.jpg.large_image_url;
@@ -140,7 +141,7 @@ function run(argv) {
 					variables: { action: "copy" },
 				},
 				shift: {
-					arg: altSearchURL,
+					arg: altSearchUrl,
 					subtitle: altSearchSubtitle,
 					variables: { action: "open" },
 				},
