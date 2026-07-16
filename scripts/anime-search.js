@@ -8,7 +8,9 @@ app.includeStandardAdditions = true;
 function httpRequest(url) {
 	const queryUrl = $.NSURL.URLWithString(url);
 	const data = $.NSData.dataWithContentsOfURL(queryUrl);
-	return $.NSString.alloc.initWithDataEncoding(data, $.NSUTF8StringEncoding).js;
+	const response = $.NSString.alloc.initWithDataEncoding(data, $.NSUTF8StringEncoding).js;
+	if (response) return response;
+	return app.doShellScript(`curl -s '${url}'`); // fallback on certain errors
 }
 
 /**
@@ -71,24 +73,28 @@ function run(argv) {
 	// INFO rate limit: 60 requests/minute https://docs.api.jikan.moe/#section/Information/Rate-Limiting
 	// DOCS https://docs.api.jikan.moe/#tag/anime/operation/getAnimeSearch
 	const apiUrl = "https://api.jikan.moe/v4/anime?" + params.join("&");
-	/** @type {{data: MalEntry[]}} */
-	const response = JSON.parse(httpRequest(apiURL));
-	if (!response.data) {
-		console.log(JSON.stringify(response));
-		return errorItem("Unknown error.", "See debugging log.");
+	const response = httpRequest(apiUrl);
+	/** @type {{data: MalEntry[]?, message: string?}} */ let json;
+	try {
+		json = JSON.parse(response);
+	} catch (error) {
+		console.log("error:", error);
+		console.log("Response: ", response);
+		return errorItem("JSON not parsable.", "For details, see the debugging log.");
 	}
-	if (response.data.length === 0) return errorItem("No results.", "");
+	if (!json.data) {
+		console.log("JSON response: ", JSON.stringify(response));
+		const message = json.message || "JSON contains no usable data.";
+		return errorItem(message, "For details, see the debugging log.");
+	}
+	if (json.data.length === 0) return errorItem("No results.", "");
 
 	//───────────────────────────────────────────────────────────────────────────
 
-	/** @type AlfredItem[] */
-	const animes = [];
-	/** @type AlfredItem[] */
 	/** @type AlfredItem[] */ const animes = [];
 	/** @type AlfredItem[] */ const airingAnimes = [];
-	const airingAnimes = [];
 
-	for (const anime of response.data) {
+	for (const anime of json.data) {
 		// biome-ignore format: annoyingly long list
 		const { titles, mal_id, year, status, episodes, score, genres, themes, demographics, images, url } = anime;
 
